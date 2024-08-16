@@ -2521,6 +2521,11 @@ export class SequentHomeAuto extends SequentIO {
             let chan = this.out0_10[i];
             if (chan.enabled) desc.push({ type: 'i2c', isActive: this.device.isActive, name: chan.name, binding: `i2c:${this.i2c.busId}:${this.device.id}:out0_10.${i + 1}`, category: category });
         }
+        category = 'Relays'
+        for (let i = 0; i < this.relays.length; i++) {
+            let relay = this.relays[i];
+            desc.push({ type: 'i2c', isActive: this.device.isActive, name: relay.name, binding: `i2c:${this.i2c.busId}:${this.device.id}:${relay.id}`, category: category });
+        }
         return desc;
     }
     public getValue(prop: string) {
