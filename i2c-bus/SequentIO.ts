@@ -2534,17 +2534,23 @@ export class SequentHomeAuto extends SequentIO {
         // 2. Determine which array we are coming from.
         // 3. Map the IO number to the value.
         let p = prop.toLowerCase();
+        let retval
         switch (p) {
             case 'cputempc':
-                return this.info.cpuTemp;
+                retval = this.info.cpuTemp;
+                break
             case 'cputempf':
-                return utils.convert.temperature.convertUnits(this.info.cpuTemp, 'C', 'F');
+                retval = utils.convert.temperature.convertUnits(this.info.cpuTemp, 'C', 'F');
+                break
             case 'cputempk':
-                return utils.convert.temperature.convertUnits(this.info.cpuTemp, 'C', 'K');
+                retval = utils.convert.temperature.convertUnits(this.info.cpuTemp, 'C', 'K');
+                break
             case 'pivoltage':
-                return this.info.raspiVolts;
+                retval = this.info.raspiVolts;
+                break
             case 'fwversion':
-                return this.info.fwVersion;
+                retval = this.info.fwVersion;
+                break
             default:
                 let iarr;
                 if (p.startsWith('out0_10')) iarr = this.out0_10;
@@ -2568,7 +2574,9 @@ export class SequentHomeAuto extends SequentIO {
                 // In order to retain parity with the multi-relay types we need to look for the relayval and relayobj
                 // values.
                 if (p.startsWith('relayval')) chan = chan.state;
-                return (parr.length > 1) ? super.getValue(parr[1], chan) : chan;
+                retval = (parr.length > 1) ? super.getValue(parr[1], chan) : chan;
         }
+        logger.debug(`Returning value ${retval} for property ${p}.`)
+        return retval
     }
 }
